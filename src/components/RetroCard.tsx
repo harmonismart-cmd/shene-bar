@@ -3,10 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { SupporterStyleDetails } from '../types';
 import PixelAvatar from './PixelAvatar';
-import { Heart, Sparkles, Share2, Award, Zap, Compass, RefreshCw } from 'lucide-react';
+import { Heart, Sparkles, Share2, Award, Zap, Compass, RefreshCw, Download } from 'lucide-react';
+import { toPng } from 'html-to-image';
 
 interface RetroCardProps {
   name: string;
@@ -18,6 +19,41 @@ interface RetroCardProps {
 }
 
 export default function RetroCard({ name, details, scores, onSave, onReset, isSaved }: RetroCardProps) {
+  const [isCapturing, setIsCapturing] = useState(false);
+
+  const handleDownloadImage = async () => {
+    const el = document.getElementById('adventurer-card-content');
+    if (!el) return;
+
+    setIsCapturing(true);
+    // Give a short delay to allow state changes to register
+    await new Promise((resolve) => setTimeout(resolve, 150));
+
+    try {
+      const dataUrl = await toPng(el, {
+        backgroundColor: '#0a0a14', // Theme background color
+        pixelRatio: 2, // 2x density for crisp retro-pixel resolution
+        style: {
+          transform: 'scale(1)',
+          borderRadius: '20px', // Preserve the round border corners in screenshot
+        },
+        cacheBust: true,
+      });
+
+      const link = document.createElement('a');
+      link.download = `冒険者カード_${name}.png`;
+      link.href = dataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Failed to generate image:', err);
+      alert('画像の生成に失敗しました。お手数ですが、もう一度保存ボタンを押してください。');
+    } finally {
+      setIsCapturing(false);
+    }
+  };
+
   // Simple share/copy text generator
   const handleShare = () => {
     const shareText = `【シェーンの支援者酒場】で仲間として登録されました！\n\n■ 登録名：${name}\n■ 称号：${details.title}\n■ 職業：${details.className}\n■ 支援スタイル：${details.slogan}\n\n「${details.description}」\n\nあなたもシェーンの酒場で支援者タイプを診断しよう！\n${window.location.href}`;
@@ -30,7 +66,7 @@ export default function RetroCard({ name, details, scores, onSave, onReset, isSa
   return (
     <div id="retro-card-container" className="flex flex-col items-center w-full max-w-2xl mx-auto p-1 animate-fade-in">
       {/* Golden JRPG Mother 3 Frame */}
-      <div className="w-full mother3-window-gold p-5 md:p-6 shadow-2xl relative overflow-hidden font-mono text-white">
+      <div id="adventurer-card-content" className="w-full mother3-window-gold p-5 md:p-6 shadow-2xl relative overflow-hidden font-mono text-white">
         {/* Subtle scanline overlay */}
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,rgba(0,0,0,0.1)_100%)]" />
 
@@ -318,6 +354,15 @@ export default function RetroCard({ name, details, scores, onSave, onReset, isSa
             <Sparkles className="w-3.5 h-3.5" /> 登録簿に書き込む
           </button>
         )}
+
+        <button
+          onClick={handleDownloadImage}
+          disabled={isCapturing}
+          className="px-6 py-3 bg-black hover:bg-[#111125] text-cyan-400 hover:text-white border-4 border-cyan-400 btn-pixel text-xs font-bold tracking-wider cursor-pointer shadow-lg transition-all flex items-center justify-center gap-2 group disabled:opacity-50"
+        >
+          <span className="opacity-0 group-hover:opacity-100 transition-opacity text-cyan-400">▶</span>
+          <Download className="w-3.5 h-3.5" /> {isCapturing ? '生成中...' : 'カード画像保存'}
+        </button>
 
         <button
           onClick={handleShare}
