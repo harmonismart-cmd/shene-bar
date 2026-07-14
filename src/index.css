@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap');
+
+@theme {
+  --font-sans: "DotGothic16", system-ui, sans-serif;
+  --font-mono: "Press Start 2P", "Courier New", Courier, monospace;
+}
+
+/* Custom styles for JRPG pixel retro effect */
+body {
+  background-color: #000015;
+  image-rendering: pixelated;
+  color: #ffffff;
+}
+
+/* Dragon Quest Classic Retro Window style */
+.dq-window {
+  border: 4px solid #ffffff;
+  box-shadow: inset 0 0 0 2px #000, 0 0 0 2px #000;
+  background: #000000;
+  position: relative;
+}
+
+.dq-window::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 1px solid #ffffff;
+  pointer-events: none;
+}
+
+/* Mother 3 / EarthBound Inspired Styling - Cozy Rounded JRPG Frames */
+.mother3-window {
+  background: linear-gradient(135deg, #17152b 0%, #0a0815 100%);
+  border: 4px solid #4a3e72;
+  border-radius: 16px;
+  box-shadow: 0 6px 0 #05040a, inset 0 0 0 2px #6c5c9d, inset 0 0 12px rgba(139, 92, 246, 0.15);
+  position: relative;
+}
+
+.mother3-window::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border: 1px solid #907dc2;
+  border-radius: 11px;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Bright yellow gold version for result/epic card */
+.mother3-window-gold {
+  background: linear-gradient(135deg, #1f1406 0%, #0d0802 100%);
+  border: 5px solid #d97706;
+  border-radius: 20px;
+  box-shadow: 0 8px 0 #311500, inset 0 0 0 2px #fbbf24, inset 0 0 15px rgba(217, 119, 6, 0.2);
+  position: relative;
+}
+
+.mother3-window-gold::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border: 1.5px solid #fef08a;
+  border-radius: 14px;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* Gold Variation for Epic Results */
+.dq-window-gold {
+  border: 4px solid #ffd700;
+  box-shadow: inset 0 0 0 2px #000, 0 0 0 2px #000;
+  background: #000000;
+  position: relative;
+}
+
+.dq-window-gold::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border: 1px solid #ffd700;
+  pointer-events: none;
+}
+
+.cursor-blink {
+  display: inline-block;
+  width: 10px;
+  height: 14px;
+  background: #ffffff;
+  margin-left: 6px;
+  animation: blink 0.8s infinite steps(2, start);
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  to { visibility: hidden; }
+}
+
+.btn-pixel {
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-pixel:hover {
+  background: #111125;
+  color: #ffd700;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* CRT Scanline & flicker effects */
+.scanlines {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.04));
+  z-index: 999;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Retro CRT Glow */
+.crt-glow {
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8),
+              inset 0 0 20px rgba(245, 158, 11, 0.1);
+}
+
+

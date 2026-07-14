@@ -1,0 +1,6 @@
+{
+  "name": "ルイーダの支援者酒場",
+  "description": "5つの冒険者設問からあなたの『支援者スタイル』とキャッチーな称号を診断し、ルイーダの登録簿に登録する、ドラクエ3のルイーダの酒場風診断ツール。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
